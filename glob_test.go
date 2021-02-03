@@ -32,6 +32,7 @@ func TestBasicPatterns(t *testing.T) {
 		testCase := testCase
 
 		t.Run(testCase.Pattern, func(t *testing.T) {
+		  t.Parallel()
 			re, err := glob.ToRegexPattern(testCase.Pattern, false)
 			if err != nil {
 				t.Fatal(err)
