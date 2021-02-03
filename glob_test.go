@@ -22,6 +22,10 @@ func TestBasicPatterns(t *testing.T) {
 		{"/etc/*", []string{"/etc/passwd"}, []string{"/boot/vmlinuz", "/etc/ssh/sshd_config"}},
 		{"/home/**", []string{"/home/user1", "/home/user2/www"}, []string{"/"}},
 		{"**.go", []string{"dir/file.go", "dir/subdir/file.go"}, []string{"dir/file.py"}},
+		{"[ab].txt", []string{"a.txt"}, []string{"c.txt"}},
+		{"[a-c].txt", []string{"b.txt"}, []string{"d.txt"}},
+		{"[!a].txt", []string{"b.txt"}, []string{"a.txt"}},
+		{"[!a]", []string{"b"}, []string{"/"}},
 	}
 
 	for _, testCase := range testCases {
