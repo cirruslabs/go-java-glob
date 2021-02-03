@@ -8,7 +8,9 @@ Cirrus CI [historically used](https://github.com/cirruslabs/cirrus-ci-docs/issue
 
 There exist a popular [doublestar](https://github.com/bmatcuk/doublestar) package for Golang, but it has subtle (and, unfortunately, deal-breaking) differences from the Java globbing. For example, in how [the `**` syntax works](https://github.com/bmatcuk/doublestar/issues/54).
 
-Thus the original source was manually translated from the [`Globs.java`](https://github.com/openjdk/jdk/blob/3789983e89c9de252ef546a1b98a732a7d066650/src/java.base/share/classes/sun/nio/fs/Globs.java) file publicly available as a part of the [OpenJDK](https://github.com/openjdk/jdk) release. The result can be found in the [`glob.go`](glob.go), which maps in a one-to-one fashion to the original, and can be audited for differences in a matter of a few minutes.
+Thus the original source was manually translated from the [`Globs.java`](https://github.com/openjdk/jdk/blob/3789983e89c9de252ef546a1b98a732a7d066650/src/java.base/share/classes/sun/nio/fs/Globs.java) file publicly available as a part of the [OpenJDK](https://github.com/openjdk/jdk) release.
+
+The result can be found in the [`glob.go`](glob.go), which maps in a one-to-one fashion to the original (except for the change that works around missing `&&` (AND) operator in Golang's regexp package) and can be compared for differences in a matter of a few minutes.
 
 ## Usage
 

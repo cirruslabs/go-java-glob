@@ -80,26 +80,33 @@ func ToRegexPattern(globPattern string, isDos bool) (*regexp.Regexp, error) {
 				regex += string(c)
 			}
 		case '[':
-			// don't match name separator in class
-			if isDos {
-				regex += "[[^\\\\]&&["
-			} else {
-				regex += "[[^/]&&["
-			}
+			regex += "["
 			if next(globPattern, i) == '^' {
 				// escape the regex negation char if it appears
 				regex += "\\^"
 				i++
 			} else {
+				var negationUsed bool
+
 				// negation
 				if next(globPattern, i) == '!' {
 					regex += "^"
 					i++
+					negationUsed = true
 				}
 				// hyphen allowed at start
 				if next(globPattern, i) == '-' {
 					regex += "-"
 					i++
+				}
+
+				if negationUsed {
+					// don't match name separator in class
+					if isDos {
+						regex += "\\\\"
+					} else {
+						regex += "/"
+					}
 				}
 			}
 
@@ -142,7 +149,7 @@ func ToRegexPattern(globPattern string, isDos bool) (*regexp.Regexp, error) {
 			if c != ']' {
 				return nil, fmt.Errorf("%w: missing '] in %s at %d", ErrPatternSyntax, globPattern, i-1)
 			}
-			regex += "]]"
+			regex += "]"
 		case '{':
 			if inGroup {
 				return nil, fmt.Errorf("%w: cannot nest groups in %s at %d", ErrPatternSyntax, globPattern, i-1)
